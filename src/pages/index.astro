@@ -1,27 +1,31 @@
 ---
-import Section from "@/components/astro/Section.astro";
-import Container from "@/components/astro/Container.astro";
+import directus from "@/lib/directus";
+import { readItems } from "@directus/sdk";
 import Layout from "@/layouts/Layout.astro";
-const res = await fetch(`${import.meta.env.DIRECTUS_REST_API_URL}/articles`);
-const articles = await res.json();
+import ArticleCard from "@/components/astro/ArticleCard.astro";
+import ArticlesListSection from "@/components/sections/ArticlesListSection.astro";
+
+const articles = await directus.request(
+  readItems("articles", {
+    fields: ["slug", "title", "published_date"],
+    sort: ["-published_date"],
+  }),
+);
+console.log(articles);
 ---
 
 <Layout>
   <!-- Loop through articles and display them -->
-  <Section>
-    <Container class="max-w-[42rem]">
+  <ArticlesListSection>
     {
       articles.map((article: any) => (
-        <h1>{article.title.rendered}</h1>
-          <time datetime={article.date}>
-            {new Date(article.date).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </time>
+        <ArticleCard
+          contentType="articles"
+          title={article.title}
+          date={article.published_date}
+          slug={article.slug}
+        />
       ))
     }
-  </Container>
-  </Section>
+  </ArticlesListSection>
 </Layout>
