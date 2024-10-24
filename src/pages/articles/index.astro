@@ -1,0 +1,31 @@
+---
+import directus from "@/lib/directus";
+import { readItems } from "@directus/sdk";
+import Layout from "@/layouts/Layout.astro";
+import ArticleCard from "@/components/astro/ArticleCard.astro";
+import ArticlesListSection from "@/components/sections/ArticlesListSection.astro";
+
+const articles = await directus.request(
+  readItems("articles", {
+    fields: ["slug", "title", "published_date"],
+    sort: ["-published_date"],
+  }),
+);
+console.log(articles);
+---
+
+<Layout>
+  <!-- Loop through articles and display them -->
+  <ArticlesListSection>
+    {
+      articles.map((article: any) => (
+        <ArticleCard
+          contentType="articles"
+          title={article.title}
+          date={article.published_date}
+          slug={article.slug}
+        />
+      ))
+    }
+  </ArticlesListSection>
+</Layout>

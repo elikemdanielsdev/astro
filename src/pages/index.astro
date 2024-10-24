@@ -1,0 +1,27 @@
+---
+import Section from "@/components/astro/Section.astro";
+import Container from "@/components/astro/Container.astro";
+import Layout from "@/layouts/Layout.astro";
+const res = await fetch(`${import.meta.env.DIRECTUS_REST_API_URL}/articles`);
+const articles = await res.json();
+---
+
+<Layout>
+  <!-- Loop through articles and display them -->
+  <Section>
+    <Container class="max-w-[42rem]">
+    {
+      articles.map((article: any) => (
+        <h1>{article.title.rendered}</h1>
+          <time datetime={article.date}>
+            {new Date(article.date).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </time>
+      ))
+    }
+  </Container>
+  </Section>
+</Layout>

@@ -1,0 +1,14 @@
+---
+import clsx from "clsx";
+
+interface Props {
+  tag: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+  class?: string;
+}
+
+const { tag: Tag, class: className } = Astro.props as Props;
+---
+
+<Tag {...className && { class: clsx(className) }}>
+  <slot />
+</Tag>

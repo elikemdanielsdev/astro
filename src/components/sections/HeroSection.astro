@@ -1,0 +1,19 @@
+---
+import Section from "@/components/astro/Section.astro";
+import Container from "@/components/astro/Container.astro";
+import Heading from "@/components/astro/Heading.astro";
+
+interface Props {
+  title?: string;
+  subtitle?: string;
+}
+
+const { title, subtitle } = Astro.props as Props;
+---
+
+<Section>
+  <Container>
+    <Heading tag="h1" class="text-5xl font-bold">{title}</Heading>
+    <Heading tag="h2" class="text-xl">{subtitle}</Heading>
+  </Container>
+</Section>

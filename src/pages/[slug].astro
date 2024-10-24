@@ -1,0 +1,43 @@
+---
+// Import necessary components and types
+import Layout from "@/layouts/Layout.astro";
+import { components, type SectionType } from "@/lib/sections";
+// Define the Block interface
+interface Block {
+  acf_fc_layout: SectionType;
+  [key: string]: any;
+}
+// Get the slug from URL params
+const { slug } = Astro.params;
+// Fetch the page data from the WordPress REST API
+const res = await fetch(
+  `${import.meta.env.WP_REST_API_URL}/pages?slug=${slug}`,
+);
+const [page] = await res.json();
+// Generate static paths for all pages
+export async function getStaticPaths() {
+  // Fetch all pages from the WordPress REST API
+  const data = await fetch(`${import.meta.env.WP_REST_API_URL}/pages`);
+  const pages = await data.json();
+  // Return an array of page paths and props
+  return pages.map((page: any) => ({
+    params: { slug: page.slug },
+    props: { page: page },
+  }));
+}
+---
+
+<!-- Render the page layout -->
+<Layout title={page.title.rendered}>
+  <!-- Loop through the page sections -->
+  {
+    page.acf.sections.map((block: Block) => {
+      // Get the corresponding component for the section type
+      const Sections = components[block.acf_fc_layout];
+      // Skip rendering if the component doesn't exist
+      if (!Sections) return null;
+      // Render the section component with the block data
+      return <Sections {...block} />;
+    })
+  }
+</Layout>

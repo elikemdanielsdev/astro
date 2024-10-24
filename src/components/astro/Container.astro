@@ -1,0 +1,14 @@
+---
+import clsx from "clsx";
+
+interface Props {
+  htmlTag?: keyof HTMLElementTagNameMap;
+  class?: string;
+}
+
+const { htmlTag: Tag = "div", class: className } = Astro.props as Props;
+---
+
+<Tag class={clsx(`w-full mx-auto`, className)}>
+  <slot />
+</Tag>

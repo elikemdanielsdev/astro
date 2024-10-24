@@ -1,0 +1,12 @@
+---
+import Section from "@/components/astro/Section.astro";
+import Container from "@/components/astro/Container.astro";
+---
+
+<Section>
+  <Container class="bg-gray-100 p-2 max-w-[37.5rem] rounded-[2.5rem]">
+    <ul class="grid grid-cols-1 gap-2">
+      <slot />
+    </ul>
+  </Container>
+</Section>
