@@ -25,6 +25,6 @@ type Schema = {
   pages: Page[];
 }
 
-const directus = createDirectus<Schema>(import.meta.env.DIRECTUS_REST_API_URL).with(rest());
+const directus = createDirectus<Schema>(import.meta.env.DIRECTUS_URL).with(rest());
 
 export default directus;
